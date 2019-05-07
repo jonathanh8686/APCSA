@@ -186,6 +186,35 @@ public class Picture extends SimplePicture {
         }
     }
 
+    /**
+     * Method that mirrors the picture around a
+     * vertical mirror in the center of the picture
+     * from left to right
+     */
+    public void blur(int x, int y, int w, int h) {
+        Pixel[][] pixels = this.getPixels2D();
+
+        final int[] dx = {-1, 0, 1, 1, 1, 0, -1, -1};
+        final int[] dy = {-1, -1, -1, 0, 1, 1, 1, 0};
+        for(int i = x; i < x + w; i++)
+        {
+            for(int j = y; j < y + h; j++)
+            {
+                int[] sum = new int[3];
+                for(int k = 0; k < dx.length; k++)
+                {
+                    sum[0] += pixels[i + dx[k]][j + dy[k]].getRed();
+                    sum[1] += pixels[i + dx[k]][j + dy[k]].getGreen();
+                    sum[2] += pixels[i + dx[k]][j + dy[k]].getBlue();
+                }
+                pixels[i][j].setRed(sum[0] / dx.length);
+                pixels[i][j].setGreen(sum[1] / dx.length);
+                pixels[i][j].setBlue(sum[2] / dx.length);
+            }
+
+        }
+    }
+
 
     /**
      * Mirrors the image starting from the right

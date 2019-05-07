@@ -94,8 +94,7 @@ public class PictureTester {
     /**
      * Method to test mirrorVerticalRightToLeft
      */
-    public static void testMirrorVerticalRightToLeft()
-    {
+    public static void testMirrorVerticalRightToLeft() {
         Picture beach = new Picture("beach.jpg");
         beach.mirrorVerticalRightToLeft();
         beach.explore();
@@ -104,8 +103,7 @@ public class PictureTester {
     /**
      * Method to test mirrorHorizontal
      */
-    public static void testMirrorHorizontal()
-    {
+    public static void testMirrorHorizontal() {
         Picture beach = new Picture("beach.jpg");
         beach.mirrorHorizontal();
         beach.explore();
@@ -114,8 +112,7 @@ public class PictureTester {
     /**
      * Method to test mirrorHorizontalBotToTop
      */
-    public static void testMirrorHorizontalBotToTop()
-    {
+    public static void testMirrorHorizontalBotToTop() {
         Picture beach = new Picture("beach.jpg");
         beach.mirrorHorizontalBotToTop();
         beach.explore();
@@ -124,8 +121,7 @@ public class PictureTester {
     /**
      * Method to test mirrorDiagonal
      */
-    public static void testMirrorDiagonal()
-    {
+    public static void testMirrorDiagonal() {
         Picture beach = new Picture("beach.jpg");
         beach.mirrorDiagonal();
         beach.explore();
@@ -134,8 +130,7 @@ public class PictureTester {
     /**
      * Method to test mirrorArms
      */
-    public static void testMirrorArms()
-    {
+    public static void testMirrorArms() {
         Picture snowman = new Picture("snowman.jpg");
         snowman.mirrorArms();
         snowman.explore();
@@ -144,8 +139,7 @@ public class PictureTester {
     /**
      * Method to test mirrorArms
      */
-    public static void testMirrorGull()
-    {
+    public static void testMirrorGull() {
         Picture gull = new Picture("seagull.jpg");
         gull.mirrorGull();
         gull.explore();
@@ -154,18 +148,24 @@ public class PictureTester {
     /**
      * Method copy section on image
      */
-    public static void testCopy()
-    {
+    public static void testCopy() {
         Picture gull = new Picture("seagull.jpg");
-        gull.copy(new Picture("beach.jpg"),  30, 50, 100, 200);
+        gull.copy(new Picture("beach.jpg"), 30, 50, 100, 200);
         gull.explore();
     }
 
-    public static void testMyCollage()
-    {
+    public static void testMyCollage() {
         Picture water = new Picture("water.jpg");
         water.myCollage();
         water.explore();
+    }
+
+    public static void testBlur(int x, int y, int w, int h, int n) {
+        Picture redMoto = new Picture("redMotorcycle.jpg");
+        for (int i = 0; i < n; i++) {
+            redMoto.blur(x, y, w, h);
+        }
+        redMoto.explore();
     }
 
     /**
@@ -176,6 +176,8 @@ public class PictureTester {
         // uncomment a call here to run a test
         // and comment out the ones you don't want
         // to run
+
+        testBlur(184, 158, 35, 30, 5);
 
         //testMyCollage();
         //testMirrorGull();
@@ -197,7 +199,7 @@ public class PictureTester {
         //testMirrorDiagonal();
         //testCollage();
         //testCopy();
-        testEdgeDetection();
+        //testEdgeDetection();
         //testEdgeDetection2();
         //testChromakey();
         //testEncodeAndDecode();
