@@ -1,8 +1,5 @@
 public interface Collidable {
-    int width = 50;
-    int height = 50;
 
-
-
-
+    public int getRadius();
+    public boolean isColliding(float x2, float y2, int r1, int r2);
 }

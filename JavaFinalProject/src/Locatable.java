@@ -1,10 +1,10 @@
 public interface Locatable {
 
-    public void setxPos( int x );
-    public void setyPos( int y );
+    public void setxPos( float x );
+    public void setyPos( float y );
 
-    public int getxPos();
-    public int getyPos();
+    public float getxPos();
+    public float getyPos();
 
 
 }

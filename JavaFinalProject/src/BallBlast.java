@@ -12,7 +12,7 @@ public class BallBlast extends JFrame
         setSize(WIDTH, HEIGHT);
 
         Board gameBoard = new Board();
-        ((Component)gameBoard).setFocusable(true);
+        gameBoard.setFocusable(true);
 
         getContentPane().add(gameBoard);
 

@@ -1,11 +1,11 @@
 import java.awt.*;
 
-public class Cannon extends Controllable implements Locatable {
+public class Cannon extends Moving implements Locatable {
 
     int width;
     int height;
 
-    public Cannon(int x, int y, int xs, int ys, int w, int h) {
+    public Cannon(float x, float y, float xs, float ys, int w, int h) {
 
         super(x, y, xs, ys);
         System.out.println(y);
@@ -32,6 +32,6 @@ public class Cannon extends Controllable implements Locatable {
     public void draw(Graphics window) {
         // TODO: draw cooler cannon
         window.setColor(Color.BLUE);
-        window.fillRect(getxPos(), getyPos(), width, height);
+        window.fillRect((int)getxPos(), (int)getyPos(), width, height);
     }
 }
