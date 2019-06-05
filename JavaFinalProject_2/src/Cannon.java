@@ -14,10 +14,10 @@ public class Cannon extends Moving implements Locatable {
 
     @Override
     public void move(String d) {
-        if(d.equals("RIGHT")){
+        if(d.equals("RIGHT") && getxPos() + width < 800){
             setxPos(getxPos() + getxSpeed());
         }
-        else if(d.equals("LEFT")){
+        else if(d.equals("LEFT") && getxPos() > 0){
             setxPos(getxPos() - getxSpeed());
         }
         else if(d.equals("UP")){
@@ -35,3 +35,4 @@ public class Cannon extends Moving implements Locatable {
         window.fillRect((int)getxPos(), (int)getyPos(), width, height);
     }
 }
+
