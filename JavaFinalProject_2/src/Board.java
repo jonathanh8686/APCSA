@@ -23,7 +23,7 @@ public class Board extends Canvas implements KeyListener, Runnable {
     public Board() {
         setBackground(Color.black);
 
-        player = new Cannon(300, 500, 4, 0, 30, 60);
+        player = new Cannon(300, BallBlast.HEIGHT-100, 4, 0, 30, 60);
 
         bullets = new ArrayList<Bullet>();
         balls = new ArrayList<Ball>();
@@ -53,11 +53,11 @@ public class Board extends Canvas implements KeyListener, Runnable {
         Graphics2D twoDGraph = (Graphics2D) window;
 
         if (back == null)
-            back = (BufferedImage) (createImage(getWidth(), getHeight()));
+            back = (BufferedImage) (createImage(BallBlast.WIDTH, BallBlast.HEIGHT));
 
         Graphics graphToBack = back.createGraphics();
         graphToBack.setColor(Color.BLACK);
-        graphToBack.fillRect(0, 0, 800, 600);
+        graphToBack.fillRect(0, 0, BallBlast.WIDTH, BallBlast.HEIGHT);
 
         try {
             Scanner sc = new Scanner(new File("scores.txt"));

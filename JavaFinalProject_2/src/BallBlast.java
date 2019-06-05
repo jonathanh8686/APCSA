@@ -3,8 +3,8 @@ import java.awt.Component;
 
 public class BallBlast extends JFrame
 {
-    private static final int WIDTH = 800;
-    private static final int HEIGHT = 600;
+    protected static final int WIDTH = 1200;
+    protected static final int HEIGHT = 720;
 
     public BallBlast()
     {
@@ -15,7 +15,8 @@ public class BallBlast extends JFrame
         gameBoard.setFocusable(true);
 
         getContentPane().add(gameBoard);
-
+        
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
     }
 

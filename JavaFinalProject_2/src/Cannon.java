@@ -14,7 +14,7 @@ public class Cannon extends Moving implements Locatable {
 
     @Override
     public void move(String d) {
-        if(d.equals("RIGHT") && getxPos() + width < 800){
+        if(d.equals("RIGHT") && getxPos() + width < BallBlast.WIDTH){
             setxPos(getxPos() + getxSpeed());
         }
         else if(d.equals("LEFT") && getxPos() > 0){

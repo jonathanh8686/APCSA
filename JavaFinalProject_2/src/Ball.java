@@ -34,8 +34,8 @@ public class Ball extends Physicsable {
         xPos += xSpeed;
         yPos += ySpeed;
         if(yPos <= 0)  ySpeed = -ySpeed;
-        if(yPos + 2*getRadius() + 20 >= 600) ySpeed = -(float)Math.random() * 3 - 2;
-        if(xPos <= 0 || xPos + 2*getRadius() >= 800) xSpeed = -xSpeed;
+        if(yPos + 2*getRadius() + 20 >= BallBlast.HEIGHT) ySpeed = -(float)Math.random() * 3 - 2;
+        if(xPos <= 0 || xPos + 2*getRadius() >= BallBlast.WIDTH) xSpeed = -xSpeed;
     }
 
     @Override
