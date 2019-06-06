@@ -4,6 +4,7 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -49,7 +50,7 @@ public class Board extends Canvas implements KeyListener, Runnable {
 
     boolean[] moveKeys; // left, right, up, down
 
-    public Board() {
+    public Board() throws IOException {
         setBackground(Color.black);
 
         player = new Cannon(300, BallBlast.HEIGHT-100, 4, 0, 30, 60);
@@ -61,10 +62,18 @@ public class Board extends Canvas implements KeyListener, Runnable {
 
         balls.add(new Ball((float) Math.random() * 600 + 100,  100, (float) Math.random() + 0.2f, 0, 100, Color.ORANGE));
         balls.add(new Ball((float) Math.random() * 600 + 100, 100, (float) Math.random() + 0.2f, 0, 100, Color.ORANGE));
-
+        File f1 = new File("scores.local");
+        File f2 = new File("highScores.csv");
+        
+        if (!f1.exists()) {
+            f1.createNewFile();
+        }
+        if (!f2.exists()) {
+            f2.createNewFile();
+        }
         
         try {
-            Scanner sc = new Scanner(new File("scores.local"));
+            Scanner sc = new Scanner(f1);
             prevScore = sc.nextLine();
             
         }
@@ -73,7 +82,7 @@ public class Board extends Canvas implements KeyListener, Runnable {
             prevScore = "0";
         }
         try {
-            Scanner sc = new Scanner(new File("highScores.csv"));
+            Scanner sc = new Scanner(f2);
             highScore = sc.nextLine().split(",")[1];
         } catch (Exception e) {
             
@@ -133,7 +142,7 @@ public class Board extends Canvas implements KeyListener, Runnable {
 
             if (cball.isColliding(player.xPos + player.width / 2, player.yPos + player.height / 2, cball.getRadius(), 10) == true) {
                 gameGoing = false;
-
+                
                 try {
                     FileWriter fileWriter = new FileWriter("scores.local");
                     fileWriter.append(Integer.toString(score) + "\n" );
