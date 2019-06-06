@@ -30,8 +30,8 @@ public class Board extends Canvas implements KeyListener, Runnable {
 
         keys = new boolean[4];
 
-        balls.add(new Ball((float) Math.random() * 600 + 100,  100, (float) Math.random() + 0.2f, 0, 100, Color.ORANGE));
-        balls.add(new Ball((float) Math.random() * 600 + 100, 100, (float) Math.random() + 0.2f, 0, 100, Color.ORANGE));
+        balls.add(new Ball((float) Math.random() * 600 + 100,  100, (float) Math.random() + 0.2f, 0, 105, Color.GREEN));
+        balls.add(new Ball((float) Math.random() * 600 + 100, 100, (float) Math.random() + 0.2f, 0, 105, Color.GREEN));
 
 
         this.addKeyListener(this);
@@ -62,9 +62,9 @@ public class Board extends Canvas implements KeyListener, Runnable {
         try {
             Scanner sc = new Scanner(new File("scores.txt"));
             graphToBack.setColor(Color.CYAN);
-                String s = sc.nextLine();
-                System.out.println("Previous Score:" + s);
-                graphToBack.drawString("Previous Score:" + s, 50, 100);
+            String s = sc.nextLine();
+            System.out.println("Previous Score:" + s);
+            graphToBack.drawString("Previous Score:" + s, 50, 100);
         }
         catch (Exception e)
         {
@@ -150,7 +150,7 @@ public class Board extends Canvas implements KeyListener, Runnable {
     }
 
     public void spawnBall() {
-        balls.add(new Ball((float) Math.random() * 600 + 100, 100, (float) Math.random() + 0.2f, 0, 125, Color.GREEN));
+        balls.add(new Ball((float) Math.random() * 500 + 100, 100, (float) Math.random() + 0.2f, 0, 125, Color.GREEN));
     }
 
     @Override
