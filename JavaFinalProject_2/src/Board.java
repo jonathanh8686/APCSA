@@ -64,7 +64,7 @@ public class Board extends Canvas implements KeyListener, Runnable {
 
         
         try {
-            Scanner sc = new Scanner(new File("scores.txt"));
+            Scanner sc = new Scanner(new File("scores.local"));
             prevScore = sc.nextLine();
             
         }
@@ -135,7 +135,7 @@ public class Board extends Canvas implements KeyListener, Runnable {
                 gameGoing = false;
 
                 try {
-                    FileWriter fileWriter = new FileWriter("scores.txt");
+                    FileWriter fileWriter = new FileWriter("scores.local");
                     fileWriter.append(Integer.toString(score) + "\n" );
                     fileWriter.close();
                 } catch (Exception e) {
