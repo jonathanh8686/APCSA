@@ -8,7 +8,6 @@ public class Cannon extends Moving implements Locatable {
     public Cannon(float x, float y, float xs, float ys, int w, int h) {
 
         super(x, y, xs, ys);
-        System.out.println(y);
         width = w; height = h;
     }
 

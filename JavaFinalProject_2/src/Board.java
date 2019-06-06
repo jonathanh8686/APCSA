@@ -150,6 +150,7 @@ public class Board extends Canvas implements KeyListener, Runnable {
                         scoreData.add(highScores.nextLine());
                         scores.add(Integer.parseInt(scoreData.get(n).split(",")[1]));
                     }
+                    scores.add(-1); //out of bounds errors
                     int n = 0;
                     while (score < scores.get(n)) {
                         n++;
