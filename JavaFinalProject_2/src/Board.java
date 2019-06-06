@@ -36,6 +36,7 @@ public class Board extends Canvas implements KeyListener, Runnable {
 
     int score = 0;
     String prevScore;
+    String highScore;
     
     int tick = 0;
     boolean gameGoing = true;
@@ -46,7 +47,7 @@ public class Board extends Canvas implements KeyListener, Runnable {
     ArrayList<Ball> balls;
     ArrayList<Bullet> bullets;
 
-    boolean[] keys; // left, right, up, down
+    boolean[] moveKeys; // left, right, up, down
 
     public Board() {
         setBackground(Color.black);
@@ -56,7 +57,7 @@ public class Board extends Canvas implements KeyListener, Runnable {
         bullets = new ArrayList<Bullet>();
         balls = new ArrayList<Ball>();
 
-        keys = new boolean[4];
+        moveKeys = new boolean[4];
 
         balls.add(new Ball((float) Math.random() * 600 + 100,  100, (float) Math.random() + 0.2f, 0, 100, Color.ORANGE));
         balls.add(new Ball((float) Math.random() * 600 + 100, 100, (float) Math.random() + 0.2f, 0, 100, Color.ORANGE));
@@ -65,12 +66,19 @@ public class Board extends Canvas implements KeyListener, Runnable {
         try {
             Scanner sc = new Scanner(new File("scores.txt"));
             prevScore = sc.nextLine();
+            
         }
         catch (Exception e)
         {
             prevScore = "0";
         }
-        
+        try {
+            Scanner sc = new Scanner(new File("highScores.csv"));
+            highScore = sc.nextLine().split(",")[1];
+        } catch (Exception e) {
+            
+            highScore = "0";
+        }
         this.addKeyListener(this);
         new Thread(this).start();
 
@@ -110,10 +118,10 @@ public class Board extends Canvas implements KeyListener, Runnable {
             bullets.get(i).draw(graphToBack);
         }
 
-        if (keys[0]) player.move("LEFT");
-        if (keys[1]) player.move("RIGHT");
-        if (keys[2]) player.move("UP");
-        if (keys[3]) player.move("DOWN");
+        if (moveKeys[0]) player.move("LEFT");
+        if (moveKeys[1]) player.move("RIGHT");
+        if (moveKeys[2]) player.move("UP");
+        if (moveKeys[3]) player.move("DOWN");
 
         if (tick % 15 == 0)
             bullets.add(new Bullet(player.getxPos() + player.width / 2, player.getyPos(), 0, -10));
@@ -206,7 +214,8 @@ public class Board extends Canvas implements KeyListener, Runnable {
         }
         
         graphToBack.setColor(Color.CYAN);
-        graphToBack.drawString("Previous Score:" + prevScore, 50, 100);
+        graphToBack.drawString("Previous Score: " + prevScore, 50, 100);
+        graphToBack.drawString("High Score: " + highScore, 50, 120);
         graphToBack.drawString("Current Score: " + score, 50, 200);
         
         twoDGraph.drawImage(back, null, 0, 0);
@@ -218,18 +227,18 @@ public class Board extends Canvas implements KeyListener, Runnable {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        keys[0] = (e.getKeyCode() == KeyEvent.VK_LEFT);
-        keys[1] = (e.getKeyCode() == KeyEvent.VK_RIGHT);
-        keys[2] = (e.getKeyCode() == KeyEvent.VK_UP);
-        keys[3] = (e.getKeyCode() == KeyEvent.VK_DOWN);
+        moveKeys[0] = (e.getKeyCode() == KeyEvent.VK_LEFT);
+        moveKeys[1] = (e.getKeyCode() == KeyEvent.VK_RIGHT);
+        moveKeys[2] = (e.getKeyCode() == KeyEvent.VK_UP);
+        moveKeys[3] = (e.getKeyCode() == KeyEvent.VK_DOWN);
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_LEFT) keys[0] = false;
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT) keys[1] = false;
-        if (e.getKeyCode() == KeyEvent.VK_UP) keys[2] = false;
-        if (e.getKeyCode() == KeyEvent.VK_DOWN) keys[3] = false;
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) moveKeys[0] = false;
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT) moveKeys[1] = false;
+        if (e.getKeyCode() == KeyEvent.VK_UP) moveKeys[2] = false;
+        if (e.getKeyCode() == KeyEvent.VK_DOWN) moveKeys[3] = false;
 
     }
 
