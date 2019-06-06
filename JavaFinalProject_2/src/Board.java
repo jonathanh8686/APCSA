@@ -4,7 +4,6 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -49,8 +48,9 @@ public class Board extends Canvas implements KeyListener, Runnable {
     ArrayList<Bullet> bullets;
 
     boolean[] moveKeys; // left, right, up, down
+    boolean[] funcKeys;
 
-    public Board() throws IOException {
+    public Board() {
         setBackground(Color.black);
 
         player = new Cannon(300, BallBlast.HEIGHT-100, 4, 0, 30, 60);
@@ -59,6 +59,7 @@ public class Board extends Canvas implements KeyListener, Runnable {
         balls = new ArrayList<Ball>();
 
         moveKeys = new boolean[4];
+        funcKeys = new boolean[2];
 
         balls.add(new Ball((float) Math.random() * 600 + 100,  100, (float) Math.random() + 0.2f, 0, 100, Color.ORANGE));
         balls.add(new Ball((float) Math.random() * 600 + 100, 100, (float) Math.random() + 0.2f, 0, 100, Color.ORANGE));
@@ -66,10 +67,16 @@ public class Board extends Canvas implements KeyListener, Runnable {
         File f2 = new File("highScores.csv");
         
         if (!f1.exists()) {
-            f1.createNewFile();
+            try {
+                f1.createNewFile();
+            } catch (Exception e) {
+            }
         }
         if (!f2.exists()) {
-            f2.createNewFile();
+            try {
+                f2.createNewFile();
+            } catch (Exception e) {
+            }
         }
         
         try {
@@ -96,6 +103,7 @@ public class Board extends Canvas implements KeyListener, Runnable {
 
     public void update(Graphics window) {
         paint(window);
+        System.out.println(funcKeys[0]);
     }
 
     public void paint(Graphics window) {
@@ -241,6 +249,7 @@ public class Board extends Canvas implements KeyListener, Runnable {
         moveKeys[1] = (e.getKeyCode() == KeyEvent.VK_RIGHT);
         moveKeys[2] = (e.getKeyCode() == KeyEvent.VK_UP);
         moveKeys[3] = (e.getKeyCode() == KeyEvent.VK_DOWN);
+        funcKeys[0] = (e.getKeyCode() == 'R');
     }
 
     @Override

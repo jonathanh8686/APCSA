@@ -6,12 +6,18 @@ public class BallBlast extends JFrame
     protected static final int WIDTH = 1200;
     protected static final int HEIGHT = 720;
 
+    Board gameBoard;
+    
     public BallBlast()
     {
         super("Ball Blast");
         setSize(WIDTH, HEIGHT);
-
-        Board gameBoard = new Board();
+        
+        try {
+         gameBoard = new Board();
+        } catch (Exception e) {
+            
+        }
         gameBoard.setFocusable(true);
 
         getContentPane().add(gameBoard);
