@@ -4,11 +4,40 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Scanner;
 
-public class Board extends Canvas implements KeyListener, Runnable {
+/**
+ * to do:
+ * 
+ * Add powerups:
+ * * multishot
+ * * piercing
+ * * freeze
+ * Add high score board:
+ * * Record all high scores
+ * * Allow user to add name
+ * * Timestamp
+ * * Find a way to show the scoreboard
+ * 
+ * Cannon fire rate?
+ * Bullet power
+ * 
+ */
 
+public class Board extends Canvas implements KeyListener, Runnable {
+    //configurable settings
+    static final boolean USE_TICK_AS_SCORE = false;
+    static final int NUM_SCORES_SAVED = 5;
+
+    int score = 0;
+    String prevScore;
+    String highScore;
+    
     int tick = 0;
     boolean gameGoing = true;
 
@@ -18,7 +47,7 @@ public class Board extends Canvas implements KeyListener, Runnable {
     ArrayList<Ball> balls;
     ArrayList<Bullet> bullets;
 
-    boolean[] keys; // left, right, up, down
+    boolean[] moveKeys; // left, right, up, down
 
     public Board() {
         setBackground(Color.black);
@@ -28,12 +57,28 @@ public class Board extends Canvas implements KeyListener, Runnable {
         bullets = new ArrayList<Bullet>();
         balls = new ArrayList<Ball>();
 
-        keys = new boolean[4];
+        moveKeys = new boolean[4];
 
         balls.add(new Ball((float) Math.random() * 600 + 100,  100, (float) Math.random() + 0.2f, 0, 100, Color.ORANGE));
         balls.add(new Ball((float) Math.random() * 600 + 100, 100, (float) Math.random() + 0.2f, 0, 100, Color.ORANGE));
 
-
+        
+        try {
+            Scanner sc = new Scanner(new File("scores.txt"));
+            prevScore = sc.nextLine();
+            
+        }
+        catch (Exception e)
+        {
+            prevScore = "0";
+        }
+        try {
+            Scanner sc = new Scanner(new File("highScores.csv"));
+            highScore = sc.nextLine().split(",")[1];
+        } catch (Exception e) {
+            
+            highScore = "0";
+        }
         this.addKeyListener(this);
         new Thread(this).start();
 
@@ -45,7 +90,9 @@ public class Board extends Canvas implements KeyListener, Runnable {
     }
 
     public void paint(Graphics window) {
-
+        if (USE_TICK_AS_SCORE) {
+            score = tick;
+        }
         if (!gameGoing)
             return;
 
@@ -59,19 +106,9 @@ public class Board extends Canvas implements KeyListener, Runnable {
         graphToBack.setColor(Color.BLACK);
         graphToBack.fillRect(0, 0, BallBlast.WIDTH, BallBlast.HEIGHT);
 
-        try {
-            Scanner sc = new Scanner(new File("scores.txt"));
-            graphToBack.setColor(Color.CYAN);
-                String s = sc.nextLine();
-                System.out.println("Previous Score:" + s);
-                graphToBack.drawString("Previous Score:" + s, 50, 100);
-        }
-        catch (Exception e)
-        {
+        
 
-        }
 
-        graphToBack.drawString("Current Score: " + tick, 50, 200);
 
         for (int i = bullets.size() - 1; i >= 0; i--) {
             if (bullets.get(i).getyPos() < 0)
@@ -81,10 +118,10 @@ public class Board extends Canvas implements KeyListener, Runnable {
             bullets.get(i).draw(graphToBack);
         }
 
-        if (keys[0]) player.move("LEFT");
-        if (keys[1]) player.move("RIGHT");
-        if (keys[2]) player.move("UP");
-        if (keys[3]) player.move("DOWN");
+        if (moveKeys[0]) player.move("LEFT");
+        if (moveKeys[1]) player.move("RIGHT");
+        if (moveKeys[2]) player.move("UP");
+        if (moveKeys[3]) player.move("DOWN");
 
         if (tick % 15 == 0)
             bullets.add(new Bullet(player.getxPos() + player.width / 2, player.getyPos(), 0, -10));
@@ -99,11 +136,38 @@ public class Board extends Canvas implements KeyListener, Runnable {
 
                 try {
                     FileWriter fileWriter = new FileWriter("scores.txt");
-                    fileWriter.append(Integer.toString(tick) + "\n" );
+                    fileWriter.append(Integer.toString(score) + "\n" );
                     fileWriter.close();
                 } catch (Exception e) {
 
                 }
+                
+                try { //score format: name,score,time
+                    Scanner highScores = new Scanner(new File("highScores.csv"));
+                    List<String> scoreData = new ArrayList();
+                    List<Integer> scores = new ArrayList();
+                    for (int n = 0; n < NUM_SCORES_SAVED; n++) {
+                        scoreData.add(highScores.nextLine());
+                        scores.add(Integer.parseInt(scoreData.get(n).split(",")[1]));
+                    }
+                    int n = 0;
+                    while (score < scores.get(n)) {
+                        n++;
+                    }
+                    
+                    DateFormat df = new SimpleDateFormat("yyyyMMdd");
+                    scoreData.add(n, "NAN," + score + "," + df.format(new Date()));
+                    
+                    
+                    FileWriter fileWriter = new FileWriter("highScores.csv");
+                    for (String s: scoreData.subList(0, NUM_SCORES_SAVED)) {
+                        fileWriter.append(s + "\n" );
+                    }
+                    fileWriter.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    
+                } 
 
                 return;
             }
@@ -112,6 +176,9 @@ public class Board extends Canvas implements KeyListener, Runnable {
                 if (cball.isColliding(bullets.get(j).xPos, bullets.get(j).yPos, cball.getRadius(), 2)) {
                     bullets.remove(j);
                     cball.setSize(balls.get(i).size - 5);
+                    if (!USE_TICK_AS_SCORE) {
+                        score += 5;
+                    }
                 }
             }
 
@@ -145,7 +212,12 @@ public class Board extends Canvas implements KeyListener, Runnable {
             cball.move();
             cball.draw(graphToBack);
         }
-
+        
+        graphToBack.setColor(Color.CYAN);
+        graphToBack.drawString("Previous Score: " + prevScore, 50, 100);
+        graphToBack.drawString("High Score: " + highScore, 50, 120);
+        graphToBack.drawString("Current Score: " + score, 50, 200);
+        
         twoDGraph.drawImage(back, null, 0, 0);
     }
 
@@ -155,18 +227,18 @@ public class Board extends Canvas implements KeyListener, Runnable {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        keys[0] = (e.getKeyCode() == KeyEvent.VK_LEFT);
-        keys[1] = (e.getKeyCode() == KeyEvent.VK_RIGHT);
-        keys[2] = (e.getKeyCode() == KeyEvent.VK_UP);
-        keys[3] = (e.getKeyCode() == KeyEvent.VK_DOWN);
+        moveKeys[0] = (e.getKeyCode() == KeyEvent.VK_LEFT);
+        moveKeys[1] = (e.getKeyCode() == KeyEvent.VK_RIGHT);
+        moveKeys[2] = (e.getKeyCode() == KeyEvent.VK_UP);
+        moveKeys[3] = (e.getKeyCode() == KeyEvent.VK_DOWN);
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_LEFT) keys[0] = false;
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT) keys[1] = false;
-        if (e.getKeyCode() == KeyEvent.VK_UP) keys[2] = false;
-        if (e.getKeyCode() == KeyEvent.VK_DOWN) keys[3] = false;
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) moveKeys[0] = false;
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT) moveKeys[1] = false;
+        if (e.getKeyCode() == KeyEvent.VK_UP) moveKeys[2] = false;
+        if (e.getKeyCode() == KeyEvent.VK_DOWN) moveKeys[3] = false;
 
     }
 
