@@ -41,7 +41,7 @@ public class Ball extends Physicsable {
     @Override
     public void draw(Graphics window) {
         window.setColor(col);
-        window.fillOval((int)xPos, (int)yPos, size * 2, size * 2);
+        window.fillOval((int)xPos, (int)yPos, getRadius() * 2, getRadius() * 2);
         window.drawString(Integer.toString(size), (int)xPos, (int)yPos);
     }
 
