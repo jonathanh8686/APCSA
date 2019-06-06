@@ -63,7 +63,6 @@ public class Board extends Canvas implements KeyListener, Runnable {
             Scanner sc = new Scanner(new File("scores.txt"));
             graphToBack.setColor(Color.CYAN);
                 String s = sc.nextLine();
-                System.out.println("Previous Score:" + s);
                 graphToBack.drawString("Previous Score:" + s, 50, 100);
         }
         catch (Exception e)
