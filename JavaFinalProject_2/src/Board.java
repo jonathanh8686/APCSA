@@ -48,7 +48,7 @@ public class Board extends Canvas implements KeyListener, Runnable {
     ArrayList<Bullet> bullets;
 
     boolean[] moveKeys; // left, right, up, down
-    boolean[] funcKeys;
+    boolean[] funcKeys; // R (restart), S (open scoreboard)
 
     public Board() {
         setBackground(Color.black);
@@ -103,16 +103,19 @@ public class Board extends Canvas implements KeyListener, Runnable {
 
     public void update(Graphics window) {
         paint(window);
-        System.out.println(funcKeys[0]);
+        if (funcKeys[1]) {
+            new Scoreboard().setVisible(true);
+            funcKeys[1] = false;
+        }
     }
 
     public void paint(Graphics window) {
         if (USE_TICK_AS_SCORE) {
             score = tick;
         }
-        if (!gameGoing)
+        if (!gameGoing) {
             return;
-
+        }
         tick++;
         Graphics2D twoDGraph = (Graphics2D) window;
 
@@ -250,6 +253,7 @@ public class Board extends Canvas implements KeyListener, Runnable {
         moveKeys[2] = (e.getKeyCode() == KeyEvent.VK_UP);
         moveKeys[3] = (e.getKeyCode() == KeyEvent.VK_DOWN);
         funcKeys[0] = (e.getKeyCode() == 'R');
+        funcKeys[1] = (e.getKeyCode() == 'S');
     }
 
     @Override
@@ -258,6 +262,8 @@ public class Board extends Canvas implements KeyListener, Runnable {
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) moveKeys[1] = false;
         if (e.getKeyCode() == KeyEvent.VK_UP) moveKeys[2] = false;
         if (e.getKeyCode() == KeyEvent.VK_DOWN) moveKeys[3] = false;
+        if (e.getKeyCode() == 'R') funcKeys[0] = false;
+        if (e.getKeyCode() == 'S') funcKeys[1] = false;
 
     }
 
