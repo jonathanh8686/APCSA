@@ -1,4 +1,6 @@
 
+import java.io.File;
+import java.util.Scanner;
 import javax.swing.JFrame;
 
 /*
@@ -12,13 +14,26 @@ import javax.swing.JFrame;
  * @author yaod5171
  */
 public class Scoreboard extends javax.swing.JFrame {
-
+    
+    private String[] data;
     /**
      * Creates new form Scoreboard
      */
     public Scoreboard() {
         initComponents();
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        try {
+            Scanner sc = new Scanner(new File("highScores.csv"));
+            for (int i = 0; sc.hasNext(); i++) {
+                data = sc.nextLine().split(",");
+                highScoreTable.setValueAt(data[0], i, 0);
+                highScoreTable.setValueAt(data[1], i, 1);
+                highScoreTable.setValueAt(data[2], i, 2);
+            }
+        } catch (Exception e) {
+            
+        }
+        
     }
 
     /**
@@ -46,18 +61,40 @@ public class Scoreboard extends javax.swing.JFrame {
 
         highScoreTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Name", "Score", "Date"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         highScoreTable.setFillsViewportHeight(true);
         highScoreTable.setRowHeight(40);
+        highScoreTable.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(highScoreTable);
+        if (highScoreTable.getColumnModel().getColumnCount() > 0) {
+            highScoreTable.getColumnModel().getColumn(0).setResizable(false);
+            highScoreTable.getColumnModel().getColumn(1).setResizable(false);
+            highScoreTable.getColumnModel().getColumn(2).setResizable(false);
+        }
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -66,7 +103,7 @@ public class Scoreboard extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
