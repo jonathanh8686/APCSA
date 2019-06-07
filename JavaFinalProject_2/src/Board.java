@@ -100,6 +100,56 @@ public class Board extends Canvas implements KeyListener, Runnable {
 
         setVisible(true);
     }
+    
+    public void reset() {
+
+        bullets = new ArrayList<Bullet>();
+        balls = new ArrayList<Ball>();
+
+        moveKeys = new boolean[4];
+        funcKeys = new boolean[2];
+        
+        gameGoing = true;
+        score = 0;
+        tick = 0;
+        
+        player = new Cannon(300, BallBlast.HEIGHT-100, 4, 0, 30, 60);
+        
+        balls.add(new Ball((float) Math.random() * 600 + 100,  100, (float) Math.random() + 0.2f, 0, 100, Color.ORANGE));
+        balls.add(new Ball((float) Math.random() * 600 + 100, 100, (float) Math.random() + 0.2f, 0, 100, Color.ORANGE));
+        
+        File f1 = new File("scores.local");
+        File f2 = new File("highScores.csv");
+        
+        if (!f1.exists()) {
+            try {
+                f1.createNewFile();
+            } catch (Exception e) {
+            }
+        }
+        if (!f2.exists()) {
+            try {
+                f2.createNewFile();
+            } catch (Exception e) {
+            }
+        }
+        try {
+            Scanner sc = new Scanner(f1);
+            prevScore = sc.nextLine();
+            
+        }
+        catch (Exception e)
+        {
+            prevScore = "0";
+        }
+        try {
+            Scanner sc = new Scanner(f2);
+            highScore = sc.nextLine().split(",")[1];
+        } catch (Exception e) {
+            
+            highScore = "0";
+        }
+    }
 
     public void update(Graphics window) {
         paint(window);
@@ -114,6 +164,10 @@ public class Board extends Canvas implements KeyListener, Runnable {
             score = tick;
         }
         if (!gameGoing) {
+            if (funcKeys[0]) {
+                funcKeys[0] = false;
+                reset();
+            }
             return;
         }
         tick++;
