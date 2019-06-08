@@ -41,6 +41,7 @@ public class Board extends Canvas implements KeyListener, Runnable {
 
     ArrayList<Ball> balls;
     ArrayList<Bullet> bullets;
+    ArrayList<DeathAnimation> deathAnimations;
 
     boolean[] moveKeys; // left, right, up, down
     boolean[] funcKeys; // R (restart), S (open scoreboard)
@@ -52,6 +53,7 @@ public class Board extends Canvas implements KeyListener, Runnable {
 
         bullets = new ArrayList<Bullet>();
         balls = new ArrayList<Ball>();
+        deathAnimations = new ArrayList<DeathAnimation>();
 
         moveKeys = new boolean[4];
         funcKeys = new boolean[2];
@@ -190,7 +192,7 @@ public class Board extends Canvas implements KeyListener, Runnable {
             fileWriter.close();
         } catch (Exception e) {
         }
-        
+
         new Scoreboard().setVisible(true);
     }
 
@@ -281,6 +283,7 @@ public class Board extends Canvas implements KeyListener, Runnable {
                 }
 
                 if (cball.getRadius() <= 100 && cball.getColor() == Color.GREEN) {
+                    deathAnimations.add(new DeathAnimation((int) cball.xPos, (int) cball.yPos, 2*cball.size, cball.col));
                     balls.add(new Ball(cball.xPos, cball.yPos, cball.xSpeed, -Math.abs(cball.ySpeed), cball.getRadius() - 25, Color.RED));
                     balls.add(new Ball(cball.xPos, cball.yPos, -cball.xSpeed, -Math.abs(cball.ySpeed), cball.getRadius() - 25, Color.RED));
                     balls.remove(i);
@@ -288,6 +291,7 @@ public class Board extends Canvas implements KeyListener, Runnable {
                 }
 
                 if (cball.getRadius() <= 50 && cball.getColor() == Color.RED) {
+                    deathAnimations.add(new DeathAnimation((int) cball.xPos, (int) cball.yPos, 2*cball.size, cball.col));
                     balls.add(new Ball(cball.xPos, cball.yPos, cball.xSpeed, -Math.abs(cball.ySpeed), cball.getRadius() - 10, Color.ORANGE));
                     balls.add(new Ball(cball.xPos, cball.yPos, -cball.xSpeed, -Math.abs(cball.ySpeed), cball.getRadius() - 10, Color.ORANGE));
                     balls.remove(i);
@@ -295,12 +299,14 @@ public class Board extends Canvas implements KeyListener, Runnable {
                 }
 
                 if (cball.getRadius() <= 25 && cball.getColor() == Color.ORANGE) {
+                    deathAnimations.add(new DeathAnimation((int) cball.xPos, (int) cball.yPos, 2*cball.size, cball.col));
                     balls.add(new Ball(cball.xPos, cball.yPos, cball.xSpeed, -Math.abs(cball.ySpeed), cball.getRadius() / 2, Color.CYAN));
                     balls.add(new Ball(cball.xPos, cball.yPos, -cball.xSpeed, -Math.abs(cball.ySpeed), cball.getRadius() / 2, Color.CYAN));
                     balls.remove(i);
                     continue;
                 } else if (cball.getRadius() <= 10 && cball.getColor() == Color.cyan) {
                     // ball destroyed
+                    deathAnimations.add(new DeathAnimation((int) cball.xPos, (int) cball.yPos, 2*cball.size, cball.col));
                     balls.remove(i);
 
                     spawnBall();
@@ -309,6 +315,16 @@ public class Board extends Canvas implements KeyListener, Runnable {
                 cball.applyGravity();
                 cball.move();
                 cball.draw(graphToBack);
+            }
+
+            for (int i = 0; i < deathAnimations.size(); i++) {
+                DeathAnimation anim = deathAnimations.get(i);
+                anim.update();
+                if (anim.life == 0) {
+                    deathAnimations.remove(anim);
+                } else {
+                    anim.draw(graphToBack);
+                }
             }
 
             graphToBack.setColor(Color.CYAN);
