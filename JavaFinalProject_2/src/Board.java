@@ -202,6 +202,19 @@ public class Board extends Canvas implements KeyListener, Runnable {
      * @param window the graphics window
      */
     public void gameOver(Graphics window) {
+        window.setColor(Color.RED);
+        window.drawString("GAME OVER", BallBlast.WIDTH / 2 - 50, 200);
+        window.drawString("Press R to restart", 50, BallBlast.HEIGHT-70);
+        window.drawString("Press S to view the scoreboard", BallBlast.WIDTH-300, BallBlast.HEIGHT-70);
+
+        for (int i = 0; i < balls.size(); i++) {
+            Ball b = balls.get(i);
+            if (b.yPos + 2 * b.getRadius() + 20 >= BallBlast.HEIGHT) {
+                deathAnimations.add(new DeathAnimation((int)(b.xPos), (int)(b.yPos), b.size*2, b.col));
+                balls.remove(b);
+            }
+        }
+
         if (funcKeys[0]) {
             funcKeys[0] = false;
             reset();
@@ -213,6 +226,7 @@ public class Board extends Canvas implements KeyListener, Runnable {
     }
 
     public void update(Graphics window) {
+        System.out.println(gameGoing);
         paint(window);
     }
 
@@ -220,27 +234,83 @@ public class Board extends Canvas implements KeyListener, Runnable {
         if (USE_TICK_AS_SCORE) {
             score = tick;
         }
+        if (back == null) {
+            back = (BufferedImage) (createImage(BallBlast.WIDTH, BallBlast.HEIGHT));
+        }
+
+        Graphics graphToBack = back.createGraphics();
+        graphToBack.setColor(Color.BLACK);
+        graphToBack.fillRect(0, 0, BallBlast.WIDTH, BallBlast.HEIGHT);
+        Graphics2D twoDGraph = (Graphics2D) window;
+
+        for (int i = bullets.size() - 1; i >= 0; i--) {
+            if (bullets.get(i).getyPos() < 0) {
+                bullets.remove(i);
+            }
+
+            bullets.get(i).move("");
+            bullets.get(i).draw(graphToBack);
+        }
+
+        for (int i = balls.size() - 1; i >= 0; i--) {
+            Ball cball = balls.get(i);
+
+            if (cball.getRadius() <= 100 && cball.getColor() == Color.GREEN) {
+                deathAnimations.add(new DeathAnimation((int) cball.xPos, (int) cball.yPos, cball.size, cball.col));
+                balls.add(new Ball(cball.xPos, cball.yPos, cball.xSpeed, -Math.abs(cball.ySpeed), cball.getRadius() - 25, Color.RED));
+                balls.add(new Ball(cball.xPos, cball.yPos, -cball.xSpeed, -Math.abs(cball.ySpeed), cball.getRadius() - 25, Color.RED));
+                balls.remove(i);
+                continue;
+            }
+
+            if (cball.getRadius() <= 50 && cball.getColor() == Color.RED) {
+                deathAnimations.add(new DeathAnimation((int) cball.xPos, (int) cball.yPos, cball.size, cball.col));
+                balls.add(new Ball(cball.xPos, cball.yPos, cball.xSpeed, -Math.abs(cball.ySpeed), cball.getRadius() - 10, Color.ORANGE));
+                balls.add(new Ball(cball.xPos, cball.yPos, -cball.xSpeed, -Math.abs(cball.ySpeed), cball.getRadius() - 10, Color.ORANGE));
+                balls.remove(i);
+                continue;
+            }
+
+            if (cball.getRadius() <= 25 && cball.getColor() == Color.ORANGE) {
+                deathAnimations.add(new DeathAnimation((int) cball.xPos, (int) cball.yPos, cball.size, cball.col));
+                balls.add(new Ball(cball.xPos, cball.yPos, cball.xSpeed, -Math.abs(cball.ySpeed), cball.getRadius() / 2, Color.CYAN));
+                balls.add(new Ball(cball.xPos, cball.yPos, -cball.xSpeed, -Math.abs(cball.ySpeed), cball.getRadius() / 2, Color.CYAN));
+                balls.remove(i);
+                continue;
+            } else if (cball.getRadius() <= 10 && cball.getColor() == Color.cyan) {
+                // ball destroyed
+                deathAnimations.add(new DeathAnimation((int) cball.xPos, (int) cball.yPos, 2 * cball.size, cball.col));
+                balls.remove(i);
+
+                spawnBall();
+            }
+
+            cball.applyGravity();
+            cball.move();
+            cball.draw(graphToBack);
+        }
+
+        for (int i = 0; i < deathAnimations.size(); i++) {
+            DeathAnimation anim = deathAnimations.get(i);
+            anim.update();
+            if (anim.life == 0) {
+                deathAnimations.remove(anim);
+            } else {
+                anim.draw(graphToBack);
+            }
+        }
+
+        graphToBack.setColor(Color.CYAN);
+        graphToBack.drawString("Previous Score: " + prevScore, 50, 100);
+        graphToBack.drawString("High Score: " + highScore, 50, 120);
+        graphToBack.drawString("Current Score: " + score, 50, 200);
+
         if (!gameGoing) {
             gameOver(window);
         } else {
             tick++;
-            Graphics2D twoDGraph = (Graphics2D) window;
-
-            if (back == null) {
-                back = (BufferedImage) (createImage(BallBlast.WIDTH, BallBlast.HEIGHT));
-            }
-
-            Graphics graphToBack = back.createGraphics();
-            graphToBack.setColor(Color.BLACK);
-            graphToBack.fillRect(0, 0, BallBlast.WIDTH, BallBlast.HEIGHT);
-
-            for (int i = bullets.size() - 1; i >= 0; i--) {
-                if (bullets.get(i).getyPos() < 0) {
-                    bullets.remove(i);
-                }
-
-                bullets.get(i).move("");
-                bullets.get(i).draw(graphToBack);
+            if (tick % 15 == 0) {
+                bullets.add(new Bullet(player.getxPos() + player.width / 2, player.getyPos(), 0, -10));
             }
 
             if (moveKeys[0]) {
@@ -256,17 +326,12 @@ public class Board extends Canvas implements KeyListener, Runnable {
                 player.move("DOWN");
             }
 
-            if (tick % 15 == 0) {
-                bullets.add(new Bullet(player.getxPos() + player.width / 2, player.getyPos(), 0, -10));
-            }
-
             player.draw(graphToBack);
 
-            for (int i = balls.size() - 1; i >= 0; i--) {
-                Ball cball = balls.get(i);
-
+            for (Ball cball : balls) {
                 if (cball.isColliding(player.xPos + player.width / 2, player.yPos + player.height / 2, cball.getRadius(), 10) == true) {
                     gameGoing = false;
+                    deathAnimations.add(new DeathAnimation((int) player.xPos, (int) player.yPos, 100, Color.BLUE));
                     gameEnd(window);
 
                     return;
@@ -275,65 +340,17 @@ public class Board extends Canvas implements KeyListener, Runnable {
                 for (int j = bullets.size() - 1; j >= 0; j--) {
                     if (cball.isColliding(bullets.get(j).xPos, bullets.get(j).yPos, cball.getRadius(), 2)) {
                         bullets.remove(j);
-                        cball.setSize(balls.get(i).size - 5);
+                        cball.setSize(cball.size - 5);
                         if (!USE_TICK_AS_SCORE) {
                             score += 5;
                         }
                     }
                 }
-
-                if (cball.getRadius() <= 100 && cball.getColor() == Color.GREEN) {
-                    deathAnimations.add(new DeathAnimation((int) cball.xPos, (int) cball.yPos, 2*cball.size, cball.col));
-                    balls.add(new Ball(cball.xPos, cball.yPos, cball.xSpeed, -Math.abs(cball.ySpeed), cball.getRadius() - 25, Color.RED));
-                    balls.add(new Ball(cball.xPos, cball.yPos, -cball.xSpeed, -Math.abs(cball.ySpeed), cball.getRadius() - 25, Color.RED));
-                    balls.remove(i);
-                    continue;
-                }
-
-                if (cball.getRadius() <= 50 && cball.getColor() == Color.RED) {
-                    deathAnimations.add(new DeathAnimation((int) cball.xPos, (int) cball.yPos, 2*cball.size, cball.col));
-                    balls.add(new Ball(cball.xPos, cball.yPos, cball.xSpeed, -Math.abs(cball.ySpeed), cball.getRadius() - 10, Color.ORANGE));
-                    balls.add(new Ball(cball.xPos, cball.yPos, -cball.xSpeed, -Math.abs(cball.ySpeed), cball.getRadius() - 10, Color.ORANGE));
-                    balls.remove(i);
-                    continue;
-                }
-
-                if (cball.getRadius() <= 25 && cball.getColor() == Color.ORANGE) {
-                    deathAnimations.add(new DeathAnimation((int) cball.xPos, (int) cball.yPos, 2*cball.size, cball.col));
-                    balls.add(new Ball(cball.xPos, cball.yPos, cball.xSpeed, -Math.abs(cball.ySpeed), cball.getRadius() / 2, Color.CYAN));
-                    balls.add(new Ball(cball.xPos, cball.yPos, -cball.xSpeed, -Math.abs(cball.ySpeed), cball.getRadius() / 2, Color.CYAN));
-                    balls.remove(i);
-                    continue;
-                } else if (cball.getRadius() <= 10 && cball.getColor() == Color.cyan) {
-                    // ball destroyed
-                    deathAnimations.add(new DeathAnimation((int) cball.xPos, (int) cball.yPos, 2*cball.size, cball.col));
-                    balls.remove(i);
-
-                    spawnBall();
-                }
-
-                cball.applyGravity();
-                cball.move();
-                cball.draw(graphToBack);
             }
 
-            for (int i = 0; i < deathAnimations.size(); i++) {
-                DeathAnimation anim = deathAnimations.get(i);
-                anim.update();
-                if (anim.life == 0) {
-                    deathAnimations.remove(anim);
-                } else {
-                    anim.draw(graphToBack);
-                }
-            }
-
-            graphToBack.setColor(Color.CYAN);
-            graphToBack.drawString("Previous Score: " + prevScore, 50, 100);
-            graphToBack.drawString("High Score: " + highScore, 50, 120);
-            graphToBack.drawString("Current Score: " + score, 50, 200);
-
-            twoDGraph.drawImage(back, null, 0, 0);
         }
+
+        twoDGraph.drawImage(back, null, 0, 0);
     }
 
     public void spawnBall() {
