@@ -190,7 +190,6 @@ public class Board extends Canvas implements KeyListener, Runnable {
     }
 
     public void update(Graphics window) {
-        System.out.println(gameGoing);
         paint(window);
     }
 
@@ -324,7 +323,6 @@ public class Board extends Canvas implements KeyListener, Runnable {
         }
 
         twoDGraph.drawImage(back, null, 0, 0);
-        System.out.println("l");
     }
 
     public void spawnBall() {
