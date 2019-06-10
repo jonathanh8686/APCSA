@@ -275,7 +275,7 @@ public class Board extends Canvas implements KeyListener, Runnable {
         graphToBack.drawString("Current Score: " + score, 50, 200);
 
         if (!gameGoing) {
-            gameOver(window);
+            gameOver(graphToBack);
         } else {
             //shoot
             tick++;
@@ -324,6 +324,7 @@ public class Board extends Canvas implements KeyListener, Runnable {
         }
 
         twoDGraph.drawImage(back, null, 0, 0);
+        System.out.println("l");
     }
 
     public void spawnBall() {
