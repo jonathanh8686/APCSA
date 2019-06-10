@@ -15,8 +15,7 @@ import java.util.Scanner;
 /**
  * to do:
  *
- * Add powerups: * multishot * piercing * freeze. Allow user to add name to
- * scoreboard
+ * Add powerups: * multishot * piercing * freeze. 
  *
  * Cannon fire rate? Bullet power
  *
@@ -30,7 +29,7 @@ public class Board extends Canvas implements KeyListener, Runnable {
     int score = 0;
     String prevScore;
     String highScore;
-    String playerName = "BAL";
+    String playerName = "";
     boolean playerNameSet = true;
 
     int tick = 0;
@@ -48,48 +47,7 @@ public class Board extends Canvas implements KeyListener, Runnable {
 
     public Board() {
         setBackground(Color.black);
-
-        player = new Cannon(300, BallBlast.HEIGHT - 100, 4, 0, 30, 60);
-
-        bullets = new ArrayList<Bullet>();
-        balls = new ArrayList<Ball>();
-        deathAnimations = new ArrayList<DeathAnimation>();
-
-        moveKeys = new boolean[4];
-        funcKeys = new boolean[2];
-
-        balls.add(new Ball((float) Math.random() * 600 + 100, 100, (float) Math.random() + 0.2f, 0, 100, Color.ORANGE));
-        balls.add(new Ball((float) Math.random() * 600 + 100, 100, (float) Math.random() + 0.2f, 0, 100, Color.ORANGE));
-        File f1 = new File("scores.local");
-        File f2 = new File("highScores.csv");
-
-        if (!f1.exists()) {
-            try {
-                f1.createNewFile();
-            } catch (Exception e) {
-            }
-        }
-        if (!f2.exists()) {
-            try {
-                f2.createNewFile();
-            } catch (Exception e) {
-            }
-        }
-
-        try {
-            Scanner sc = new Scanner(f1);
-            prevScore = sc.nextLine();
-
-        } catch (Exception e) {
-            prevScore = "0";
-        }
-        try {
-            Scanner sc = new Scanner(f2);
-            highScore = sc.nextLine().split(",")[1];
-        } catch (Exception e) {
-
-            highScore = "0";
-        }
+        reset();
         this.addKeyListener(this);
         new Thread(this).start();
 
@@ -97,9 +55,9 @@ public class Board extends Canvas implements KeyListener, Runnable {
     }
 
     public void reset() {
-
-        bullets = new ArrayList<Bullet>();
-        balls = new ArrayList<Ball>();
+        bullets = new ArrayList<>();
+        balls = new ArrayList<>();
+        deathAnimations = new ArrayList<>();
 
         moveKeys = new boolean[4];
         funcKeys = new boolean[2];
@@ -151,6 +109,7 @@ public class Board extends Canvas implements KeyListener, Runnable {
      */
     public void gameEnd(Graphics window) {
         try {
+            //write the previous score
             FileWriter fileWriter = new FileWriter("scores.local");
             fileWriter.append(Integer.toString(score) + "\n");
             fileWriter.close();
@@ -181,6 +140,7 @@ public class Board extends Canvas implements KeyListener, Runnable {
     }
 
     public void finishScoreBoard(List<String> scoreData, int n, String playerName) {
+        //called by SetName.java. Finishes the process started in gameEnd().
         try {
             DateFormat df = new SimpleDateFormat("yyyyMMdd");
             scoreData.add(n, playerName + "," + score + "," + df.format(new Date()));
@@ -202,23 +162,27 @@ public class Board extends Canvas implements KeyListener, Runnable {
      * @param window the graphics window
      */
     public void gameOver(Graphics window) {
+        //game over text
         window.setColor(Color.RED);
         window.drawString("GAME OVER", BallBlast.WIDTH / 2 - 50, 200);
-        window.drawString("Press R to restart", 50, BallBlast.HEIGHT-70);
-        window.drawString("Press S to view the scoreboard", BallBlast.WIDTH-300, BallBlast.HEIGHT-70);
+        window.drawString("Press R to restart", 50, BallBlast.HEIGHT - 70);
+        window.drawString("Press S to view the scoreboard", BallBlast.WIDTH - 300, BallBlast.HEIGHT - 70);
 
+        //kill balls that hit the ground
         for (int i = 0; i < balls.size(); i++) {
             Ball b = balls.get(i);
             if (b.yPos + 2 * b.getRadius() + 20 >= BallBlast.HEIGHT) {
-                deathAnimations.add(new DeathAnimation((int)(b.xPos), (int)(b.yPos), b.size*2, b.col));
+                deathAnimations.add(new DeathAnimation((int) (b.xPos), (int) (b.yPos), b.size * 2, b.col));
                 balls.remove(b);
             }
         }
 
+        //if [R], reset
         if (funcKeys[0]) {
             funcKeys[0] = false;
             reset();
         }
+        //if [S], scoreboard
         if (funcKeys[1]) {
             new Scoreboard().setVisible(true);
             funcKeys[1] = false;
@@ -234,15 +198,17 @@ public class Board extends Canvas implements KeyListener, Runnable {
         if (USE_TICK_AS_SCORE) {
             score = tick;
         }
+        
+        //graphToBack magic
         if (back == null) {
             back = (BufferedImage) (createImage(BallBlast.WIDTH, BallBlast.HEIGHT));
         }
-
         Graphics graphToBack = back.createGraphics();
         graphToBack.setColor(Color.BLACK);
         graphToBack.fillRect(0, 0, BallBlast.WIDTH, BallBlast.HEIGHT);
         Graphics2D twoDGraph = (Graphics2D) window;
 
+        //bullet updating
         for (int i = bullets.size() - 1; i >= 0; i--) {
             if (bullets.get(i).getyPos() < 0) {
                 bullets.remove(i);
@@ -251,7 +217,8 @@ public class Board extends Canvas implements KeyListener, Runnable {
             bullets.get(i).move("");
             bullets.get(i).draw(graphToBack);
         }
-
+        
+        //ball updating and splitting
         for (int i = balls.size() - 1; i >= 0; i--) {
             Ball cball = balls.get(i);
 
@@ -289,7 +256,8 @@ public class Board extends Canvas implements KeyListener, Runnable {
             cball.move();
             cball.draw(graphToBack);
         }
-
+        
+        //update death animations
         for (int i = 0; i < deathAnimations.size(); i++) {
             DeathAnimation anim = deathAnimations.get(i);
             anim.update();
@@ -299,7 +267,8 @@ public class Board extends Canvas implements KeyListener, Runnable {
                 anim.draw(graphToBack);
             }
         }
-
+        
+        //print scores
         graphToBack.setColor(Color.CYAN);
         graphToBack.drawString("Previous Score: " + prevScore, 50, 100);
         graphToBack.drawString("High Score: " + highScore, 50, 120);
@@ -308,11 +277,13 @@ public class Board extends Canvas implements KeyListener, Runnable {
         if (!gameGoing) {
             gameOver(window);
         } else {
+            //shoot
             tick++;
             if (tick % 15 == 0) {
                 bullets.add(new Bullet(player.getxPos() + player.width / 2, player.getyPos(), 0, -10));
             }
 
+            //player move
             if (moveKeys[0]) {
                 player.move("LEFT");
             }
@@ -329,6 +300,7 @@ public class Board extends Canvas implements KeyListener, Runnable {
             player.draw(graphToBack);
 
             for (Ball cball : balls) {
+                //check if ball hit the player
                 if (cball.isColliding(player.xPos + player.width / 2, player.yPos + player.height / 2, cball.getRadius(), 10) == true) {
                     gameGoing = false;
                     deathAnimations.add(new DeathAnimation((int) player.xPos, (int) player.yPos, 100, Color.BLUE));
@@ -337,6 +309,7 @@ public class Board extends Canvas implements KeyListener, Runnable {
                     return;
                 }
 
+                //check if ball hit a bullet
                 for (int j = bullets.size() - 1; j >= 0; j--) {
                     if (cball.isColliding(bullets.get(j).xPos, bullets.get(j).yPos, cball.getRadius(), 2)) {
                         bullets.remove(j);
