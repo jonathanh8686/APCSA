@@ -209,11 +209,12 @@ public class Board extends Canvas implements KeyListener, Runnable {
 
         //bullet updating
         for (int i = bullets.size() - 1; i >= 0; i--) {
+            bullets.get(i).move("");
+            
             if (bullets.get(i).getyPos() < 0) {
                 bullets.remove(i);
             }
 
-            bullets.get(i).move("");
             bullets.get(i).draw(graphToBack);
         }
         
