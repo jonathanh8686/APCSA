@@ -9,12 +9,17 @@ public class Powerup extends Physicsable {
         powerType = pt;
     }
 
+    public Powerup(float x, float y, float xs, float ys) {
+        super(x, y, xs, ys);
+        powerType = "null";
+    }
+
     public void move() {
         xPos += xSpeed;
         yPos += ySpeed;
         if (yPos <= 0) ySpeed = -ySpeed;
-        if (yPos + 2 * getRadius() + 20 >= 600) ySpeed = -(float) Math.random() * 3 - 2;
-        if (xPos <= 0 || xPos + 2 * getRadius() >= 800) xSpeed = -xSpeed;
+        if (yPos + 2 * getRadius() + 20 >= BallBlast.HEIGHT) ySpeed = -(float) Math.random() * 3 - 2;
+        if (xPos <= 0 || xPos + 2 * getRadius() >= BallBlast.WIDTH) xSpeed = -xSpeed;
     }
 
     @Override
@@ -31,6 +36,8 @@ public class Powerup extends Physicsable {
             window.setColor(Color.red);
         else if(powerType == "ghost")
             window.setColor(Color.yellow);
+        else
+            window.setColor(Color.white);
 
         window.drawOval((int) xPos, (int) yPos, getRadius() * 2, getRadius() * 2);
         window.drawString(powerType, (int) xPos, (int) yPos);

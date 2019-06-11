@@ -4,11 +4,24 @@ public class Cannon extends Moving implements Locatable {
 
     int width;
     int height;
+    String activePowerup = "none";
+
+    public int powerupTime = 0;
 
     public Cannon(float x, float y, float xs, float ys, int w, int h) {
 
         super(x, y, xs, ys);
         width = w; height = h;
+    }
+
+    public String getActivePowerup()
+    {
+        return activePowerup;
+    }
+
+    public void setActivePowerup(String ap)
+    {
+        activePowerup = ap;
     }
 
     @Override
