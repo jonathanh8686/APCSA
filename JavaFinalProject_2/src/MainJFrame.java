@@ -20,6 +20,7 @@ public class MainJFrame extends javax.swing.JFrame {
      */
     public MainJFrame() {
         initComponents();
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
     /**
@@ -131,6 +132,7 @@ public class MainJFrame extends javax.swing.JFrame {
     private void StartButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StartButtonActionPerformed
         // TODO add your handling code here:
         BallBlast game = new BallBlast();
+        this.dispose();
     }//GEN-LAST:event_StartButtonActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened

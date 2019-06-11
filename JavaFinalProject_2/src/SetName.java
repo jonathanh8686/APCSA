@@ -204,7 +204,7 @@ public class SetName extends javax.swing.JFrame {
             public void run() {
                 new SetName().setVisible(true);
             }
-        });
+        }); 
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
