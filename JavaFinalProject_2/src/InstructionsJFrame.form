@@ -65,7 +65,7 @@
                               <Component id="InstLabel2" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="0" pref="39" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="5" max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
@@ -111,7 +111,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="InstLabel2">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Use [SPACE] to fire."/>
+            <Property name="text" type="java.lang.String" value="Shoot the balls to destroy them."/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel1">

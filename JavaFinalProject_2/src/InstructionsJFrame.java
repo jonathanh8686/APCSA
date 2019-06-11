@@ -45,7 +45,7 @@ public class InstructionsJFrame extends javax.swing.JFrame {
 
         InstLabel1.setText("Use ← and → to move.");
 
-        InstLabel2.setText("Use [SPACE] to fire.");
+        InstLabel2.setText("Shoot the balls to destroy them.");
 
         jLabel1.setText("Don't get hit by the balls!");
 
@@ -69,7 +69,7 @@ public class InstructionsJFrame extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(InstLabel2)
                             .addComponent(jLabel1))
-                        .addGap(0, 39, Short.MAX_VALUE))
+                        .addGap(0, 5, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(ExieButton)))
