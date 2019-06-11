@@ -33,6 +33,7 @@ public class SetName extends javax.swing.JFrame {
         nameTextField.setText(b.playerName);
         sD = data;
         N = n;
+        errorLabel.setVisible(false);
     }
     
 
@@ -62,7 +63,6 @@ public class SetName extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel2.setText("Put your initials here for the scoreboard:");
 
-        nameTextField.setText("BAL");
         nameTextField.setPreferredSize(new java.awt.Dimension(60, 20));
         nameTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -149,6 +149,7 @@ public class SetName extends javax.swing.JFrame {
             errorLabel.setVisible(false);
             if (board != null) {
                 board.finishScoreBoard(sD, N, nameTextField.getText());
+                board.playerName = nameTextField.getText();
                 this.dispose();
             }
         }

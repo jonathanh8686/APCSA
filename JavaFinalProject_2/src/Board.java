@@ -88,6 +88,9 @@ public class Board extends Canvas implements KeyListener, Runnable {
         if (!f2.exists()) {
             try {
                 f2.createNewFile();
+                FileWriter fw = new FileWriter(f2);
+                fw.append("NAN,0,19691201\nNAN,0,19691201\nNAN,0,19691201\nNAN,0,19691201\nNAN,0,19691201");
+                fw.close();
             } catch (Exception e) {
             }
         }
@@ -195,7 +198,6 @@ public class Board extends Canvas implements KeyListener, Runnable {
     }
 
     public void update(Graphics window) {
-        //System.out.println(gameGoing);
         paint(window);
     }
 
@@ -215,11 +217,12 @@ public class Board extends Canvas implements KeyListener, Runnable {
 
         //bullet updating
         for (int i = bullets.size() - 1; i >= 0; i--) {
+            bullets.get(i).move("");
+            
             if (bullets.get(i).getyPos() < 0) {
                 bullets.remove(i);
             }
 
-            bullets.get(i).move("");
             bullets.get(i).draw(graphToBack);
         }
         
@@ -377,7 +380,6 @@ public class Board extends Canvas implements KeyListener, Runnable {
     public void spawnPowerup() {
         String[] ptypes = {"firert", "freeze", "pierce"};
         powerups.add(new Powerup((float)Math.random() * 600 + 10, 0.0f, (float)Math.random() + 0.2f, 0.0f, ptypes[(int)(Math.random() * ptypes.length)]));
-
     }
 
     public void spawnBall() {
