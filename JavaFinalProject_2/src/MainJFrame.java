@@ -34,11 +34,12 @@ public class MainJFrame extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         TitleLabel = new javax.swing.JLabel();
         StartButton = new javax.swing.JButton();
+        ScoreboardButton = new javax.swing.JButton();
+        InstructionButton = new javax.swing.JButton();
         ScoreLabel = new javax.swing.JLabel();
         printScoreLabel = new javax.swing.JLabel();
         HighscoreLabel = new javax.swing.JLabel();
         printHighscoreLabel = new javax.swing.JLabel();
-        ScoreboardButton = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -67,6 +68,24 @@ public class MainJFrame extends javax.swing.JFrame {
         jPanel1.add(StartButton);
         StartButton.setBounds(210, 290, 100, 23);
 
+        ScoreboardButton.setText("Scoreboard");
+        ScoreboardButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ScoreboardButtonActionPerformed(evt);
+            }
+        });
+        jPanel1.add(ScoreboardButton);
+        ScoreboardButton.setBounds(210, 310, 100, 23);
+
+        InstructionButton.setText("Instructions");
+        InstructionButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                InstructionButtonMouseClicked(evt);
+            }
+        });
+        jPanel1.add(InstructionButton);
+        InstructionButton.setBounds(210, 330, 100, 23);
+
         ScoreLabel.setForeground(new java.awt.Color(255, 255, 255));
         ScoreLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         ScoreLabel.setText("Previous Score:");
@@ -88,15 +107,6 @@ public class MainJFrame extends javax.swing.JFrame {
         printHighscoreLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jPanel1.add(printHighscoreLabel);
         printHighscoreLabel.setBounds(256, 91, 236, 38);
-
-        ScoreboardButton.setText("Scoreboard");
-        ScoreboardButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ScoreboardButtonActionPerformed(evt);
-            }
-        });
-        jPanel1.add(ScoreboardButton);
-        ScoreboardButton.setBounds(210, 310, 100, 23);
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Capture.PNG"))); // NOI18N
         jLabel2.setText("jLabel2");
@@ -145,6 +155,11 @@ public class MainJFrame extends javax.swing.JFrame {
         sb.setVisible(true);
     }//GEN-LAST:event_ScoreboardButtonActionPerformed
 
+    private void InstructionButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_InstructionButtonMouseClicked
+        // TODO add your handling code here:
+        new InstructionsJFrame().setVisible(true);
+    }//GEN-LAST:event_InstructionButtonMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -182,6 +197,7 @@ public class MainJFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel HighscoreLabel;
+    private javax.swing.JButton InstructionButton;
     private javax.swing.JLabel ScoreLabel;
     private javax.swing.JButton ScoreboardButton;
     private javax.swing.JButton StartButton;
