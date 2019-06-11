@@ -4,6 +4,7 @@ public class Cannon extends Moving implements Locatable {
 
     int width;
     int height;
+    int power = 5;
     String activePowerup = "none";
 
     public int powerupTime = 0;

@@ -363,8 +363,11 @@ public class Board extends Canvas implements KeyListener, Runnable {
                         bullets.remove(j);
 
                         if(player.activePowerup.equals("pierce"))
-                            cball.setSize(cball.size - 5); // do extra damage if pierce is active
-                        cball.setSize(cball.size - 5);
+                            player.power = 10; // do extra damage if pierce is active
+                        else
+                            player.power = 5;
+                        
+                        cball.setSize(cball.size - player.power);
                         if (!USE_TICK_AS_SCORE) {
                             score += 5;
                         }
