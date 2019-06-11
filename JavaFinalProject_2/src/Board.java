@@ -83,6 +83,9 @@ public class Board extends Canvas implements KeyListener, Runnable {
         if (!f2.exists()) {
             try {
                 f2.createNewFile();
+                FileWriter fw = new FileWriter(f2);
+                fw.append("NAN,0,19691201\nNAN,0,19691201\nNAN,0,19691201\nNAN,0,19691201\nNAN,0,19691201");
+                fw.close();
             } catch (Exception e) {
             }
         }
