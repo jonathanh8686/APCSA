@@ -288,11 +288,11 @@ public class Board extends Canvas implements KeyListener, Runnable {
 
         if (!gameGoing) {
             gameOver(graphToBack);
-        } else {
+        } else {    
             //shoot
             tick++;
 
-            if(player.getActivePowerup() != "none")
+            if(!player.getActivePowerup().equals("none"))
             {
                 graphToBack.drawString(player.getActivePowerup() + ":  " + Integer.toString(POWERUP_TICKS - player.powerupTime), 50, 300);
                 if(player.powerupTime++ > POWERUP_TICKS)
@@ -303,7 +303,7 @@ public class Board extends Canvas implements KeyListener, Runnable {
             }
 
 
-            if(player.getActivePowerup() != "firert") {
+            if(!player.getActivePowerup().equals("firert")) {
                 if (tick % 15 == 0) {
                     bullets.add(new Bullet(player.getxPos() + player.width / 2, player.getyPos(), 0, -10));
                 }
@@ -362,7 +362,7 @@ public class Board extends Canvas implements KeyListener, Runnable {
                     if (cball.isColliding(bullets.get(j).xPos, bullets.get(j).yPos, cball.getRadius(), 2)) {
                         bullets.remove(j);
 
-                        if(player.activePowerup.equals("pierce"))
+                        if(player.getActivePowerup().equals("pierce"))
                             player.power = 10; // do extra damage if pierce is active
                         else
                             player.power = 5;
@@ -381,8 +381,7 @@ public class Board extends Canvas implements KeyListener, Runnable {
     }
 
     public void spawnPowerup() {
-        String[] ptypes = {"firert", "freeze", "pierce"};
-        powerups.add(new Powerup((float)Math.random() * 600 + 10, 0.0f, (float)Math.random() + 0.2f, 0.0f, ptypes[(int)(Math.random() * ptypes.length)]));
+        powerups.add(new Powerup((float)Math.random() * 600 + 10, 0.0f, (float)Math.random() + 0.2f, 0.0f));
     }
 
     public void spawnBall() {

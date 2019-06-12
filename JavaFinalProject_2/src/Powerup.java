@@ -2,6 +2,8 @@ import java.awt.*;
 
 public class Powerup extends Physicsable {
 
+    public static final String[] POWERUP_TYPES = {"freeze", "firert", "pierce"};
+    public static final int[] POWERUP_DURATIONS = {500, 1000, 1000};
     public String powerType = ""; // freeze, firert, ghost
 
     public Powerup(float x, float y, float xs, float ys, String pt) {
@@ -11,7 +13,7 @@ public class Powerup extends Physicsable {
 
     public Powerup(float x, float y, float xs, float ys) {
         super(x, y, xs, ys);
-        powerType = "null";
+        powerType = POWERUP_TYPES[(int) (Math.random() * POWERUP_TYPES.length)];
     }
 
     public void move() {
@@ -34,11 +36,11 @@ public class Powerup extends Physicsable {
             window.setColor(Color.blue);
         else if(powerType == "firert")
             window.setColor(Color.red);
-        else if(powerType == "ghost")
-            window.setColor(Color.yellow);
-        else
+        else if(powerType == "pierce")
             window.setColor(Color.white);
-
+        else 
+            window.setColor(Color.white);
+        
         window.drawOval((int) xPos, (int) yPos, getRadius() * 2, getRadius() * 2);
         window.drawString(powerType, (int) xPos, (int) yPos);
     }
