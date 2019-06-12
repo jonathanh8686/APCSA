@@ -26,10 +26,15 @@ public class Cannon extends Moving implements Locatable {
     }
 
     public void setActivePowerup(String ap) {
+        boolean set = false;
         for (int i = 0; i < Powerup.POWERUP_TYPES.length; i++) {
             if (ap.equals(Powerup.POWERUP_TYPES[i])) {
                 activePowerup = i;
+                set = true;
             }
+        }
+        if (!set) {
+            activePowerup = -1;
         }
     }
 

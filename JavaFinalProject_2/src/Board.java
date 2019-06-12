@@ -25,7 +25,6 @@ public class Board extends Canvas implements KeyListener, Runnable {
     //configurable settings
     static final boolean USE_TICK_AS_SCORE = false;
     static final int NUM_SCORES_SAVED = 5;
-    static final int POWERUP_TICKS = 5000;
 
     int score = 0;
     String prevScore;
@@ -221,9 +220,9 @@ public class Board extends Canvas implements KeyListener, Runnable {
 
             if (bullets.get(i).getyPos() < 0) {
                 bullets.remove(i);
+            } else {
+                bullets.get(i).draw(graphToBack);
             }
-
-            bullets.get(i).draw(graphToBack);
         }
 
         //ball updating and splitting
@@ -292,10 +291,10 @@ public class Board extends Canvas implements KeyListener, Runnable {
             tick++;
 
             if (!player.getActivePowerup().equals("none")) {
-                graphToBack.drawString(player.getActivePowerup() + ":  " + Integer.toString(POWERUP_TICKS - player.powerupTime), 50, 300);
-                if (player.powerupTime++ > POWERUP_TICKS) {
+                graphToBack.drawString(player.getActivePowerup() + ":  " + Integer.toString(player.powerupTime), 50, 300);
+                if (player.powerupTime-- <= 0) {
+                    System.out.println("break");
                     player.setActivePowerup("none");
-                    player.powerupTime = 0;
                 }
             }
 
@@ -316,8 +315,8 @@ public class Board extends Canvas implements KeyListener, Runnable {
 
                 if (powerups.get(i).isColliding(player.xPos + player.width / 2, player.yPos + player.height / 2, powerups.get(i).getRadius(), 20) == true) {
                     System.out.println("collision");
-                    player.setActivePowerup(powerups.get(i).powerType);
-                    player.powerupTime = 0;
+                    player.setActivePowerup(powerups.get(i).getPowerType());
+                    player.powerupTime = Powerup.POWERUP_DURATIONS[powerups.get(i).powerType];
                     powerups.remove(i);
                 }
             }
