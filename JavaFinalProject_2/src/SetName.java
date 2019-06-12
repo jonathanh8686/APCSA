@@ -7,7 +7,6 @@ import javax.swing.JFrame;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author yaod5171
@@ -18,6 +17,7 @@ public class SetName extends javax.swing.JFrame {
     private Board board;
     private List<String> sD;
     private int N;
+
     /**
      * Creates new form SetName
      */
@@ -26,7 +26,7 @@ public class SetName extends javax.swing.JFrame {
         lastString = "";
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
-    
+
     public SetName(Board b, List<String> data, int n) {
         this();
         board = b;
@@ -35,7 +35,6 @@ public class SetName extends javax.swing.JFrame {
         N = n;
         errorLabel.setVisible(false);
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -157,7 +156,7 @@ public class SetName extends javax.swing.JFrame {
 
     private void nameTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nameTextFieldKeyPressed
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_nameTextFieldKeyPressed
 
     private void nameTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nameTextFieldKeyReleased
@@ -204,7 +203,7 @@ public class SetName extends javax.swing.JFrame {
             public void run() {
                 new SetName().setVisible(true);
             }
-        }); 
+        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

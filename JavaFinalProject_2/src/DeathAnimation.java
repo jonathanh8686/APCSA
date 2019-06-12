@@ -15,7 +15,6 @@ import java.util.List;
  */
 public class DeathAnimation {
 
-    
     final int MAX_LIFE = 100;
 
     private int x, y;
@@ -37,8 +36,8 @@ public class DeathAnimation {
     }
 
     private void initCode() {
-        count = (int)(Math.sqrt(radius));
-        size = (int)(Math.sqrt(radius));
+        count = (int) (Math.sqrt(radius));
+        size = (int) (Math.sqrt(radius));
         squares = new ArrayList();
         for (int i = 0; i < count; i++) {
             squares.add(new int[]{x, y, (int) (Math.random() * 360)});
@@ -67,11 +66,11 @@ public class DeathAnimation {
     }
 
     public void update() {
-        color = setAlpha(color, (int)((double)(life) / MAX_LIFE * 255));
-        double dist = Math.acos((double)life / MAX_LIFE) * radius;
+        color = setAlpha(color, (int) ((double) (life) / MAX_LIFE * 255));
+        double dist = Math.acos((double) life / MAX_LIFE) * radius;
         for (int[] sq : squares) {
-            sq[0] = (int)(dist * Math.cos(sq[2])) + x;
-            sq[1] = (int)(dist * Math.sin(sq[2])) + y;
+            sq[0] = (int) (dist * Math.cos(sq[2])) + x;
+            sq[1] = (int) (dist * Math.sin(sq[2])) + y;
         }
         life--;
     }

@@ -8,14 +8,14 @@ import javax.swing.JFrame;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author yaod5171
  */
 public class Scoreboard extends javax.swing.JFrame {
-    
+
     private String[] data;
+
     /**
      * Creates new form Scoreboard
      */
@@ -31,9 +31,9 @@ public class Scoreboard extends javax.swing.JFrame {
                 highScoreTable.setValueAt(data[2], i, 2);
             }
         } catch (Exception e) {
-            
+
         }
-        
+
     }
 
     /**

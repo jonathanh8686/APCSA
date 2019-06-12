@@ -1,6 +1,7 @@
+
 import java.awt.*;
 
-public abstract class Moving implements Locatable{
+public abstract class Moving implements Locatable {
 
     float xPos;
     float yPos;
@@ -23,6 +24,7 @@ public abstract class Moving implements Locatable{
         xSpeed = 5;
         ySpeed = 5;
     }
+
     public void setxSpeed(float xs) {
         xSpeed = xs;
     }
@@ -31,11 +33,11 @@ public abstract class Moving implements Locatable{
         ySpeed = ys;
     }
 
-    public void setxPos(float x){
+    public void setxPos(float x) {
         xPos = x;
     }
 
-    public void setyPos(float y){
+    public void setyPos(float y) {
         yPos = y;
     }
 
@@ -47,12 +49,15 @@ public abstract class Moving implements Locatable{
         return yPos;
     }
 
-    public float getxSpeed() { return xSpeed; }
+    public float getxSpeed() {
+        return xSpeed;
+    }
 
     public float getySpeed() {
         return ySpeed;
     }
 
     public abstract void move(String d);
+
     public abstract void draw(Graphics window);
 }

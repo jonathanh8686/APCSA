@@ -37,7 +37,6 @@ public class InstructionsJFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(200, 300));
         setMinimumSize(new java.awt.Dimension(200, 300));
-        setPreferredSize(new java.awt.Dimension(200, 300));
 
         TitleLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         TitleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);

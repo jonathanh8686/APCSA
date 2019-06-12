@@ -15,7 +15,7 @@ import java.util.Scanner;
 /**
  * to do:
  *
- * Add powerups: * multishot * piercing * freeze. 
+ * Add powerups: * multishot * piercing * freeze.
  *
  * Cannon fire rate? Bullet power
  *
@@ -205,7 +205,7 @@ public class Board extends Canvas implements KeyListener, Runnable {
         if (USE_TICK_AS_SCORE) {
             score = tick;
         }
-        
+
         //graphToBack magic
         if (back == null) {
             back = (BufferedImage) (createImage(BallBlast.WIDTH, BallBlast.HEIGHT));
@@ -218,14 +218,14 @@ public class Board extends Canvas implements KeyListener, Runnable {
         //bullet updating
         for (int i = bullets.size() - 1; i >= 0; i--) {
             bullets.get(i).move("");
-            
+
             if (bullets.get(i).getyPos() < 0) {
                 bullets.remove(i);
             }
 
             bullets.get(i).draw(graphToBack);
         }
-        
+
         //ball updating and splitting
         for (int i = balls.size() - 1; i >= 0; i--) {
             Ball cball = balls.get(i);
@@ -261,8 +261,7 @@ public class Board extends Canvas implements KeyListener, Runnable {
                 spawnBall();
             }
 
-
-            if(!player.getActivePowerup().equals("freeze")) { // don't move them if freeze is active
+            if (!player.getActivePowerup().equals("freeze")) { // don't move them if freeze is active
                 cball.applyGravity();
                 cball.move();
             }
@@ -279,7 +278,7 @@ public class Board extends Canvas implements KeyListener, Runnable {
                 anim.draw(graphToBack);
             }
         }
-        
+
         //print scores
         graphToBack.setColor(Color.CYAN);
         graphToBack.drawString("Previous Score: " + prevScore, 50, 100);
@@ -288,42 +287,34 @@ public class Board extends Canvas implements KeyListener, Runnable {
 
         if (!gameGoing) {
             gameOver(graphToBack);
-        } else {    
+        } else {
             //shoot
             tick++;
 
-            if(!player.getActivePowerup().equals("none"))
-            {
+            if (!player.getActivePowerup().equals("none")) {
                 graphToBack.drawString(player.getActivePowerup() + ":  " + Integer.toString(POWERUP_TICKS - player.powerupTime), 50, 300);
-                if(player.powerupTime++ > POWERUP_TICKS)
-                {
+                if (player.powerupTime++ > POWERUP_TICKS) {
                     player.setActivePowerup("none");
                     player.powerupTime = 0;
                 }
             }
 
-
-            if(!player.getActivePowerup().equals("firert")) {
+            if (!player.getActivePowerup().equals("firert")) {
                 if (tick % 15 == 0) {
                     bullets.add(new Bullet(player.getxPos() + player.width / 2, player.getyPos(), 0, -10));
                 }
-            }
-            else
-            {
-                if(tick % 7 == 0)
-                {
+            } else {
+                if (tick % 7 == 0) {
                     bullets.add(new Bullet(player.getxPos() + player.width / 2, player.getyPos(), 0, -10));
                 }
             }
 
-            for(int i = powerups.size() - 1; i >= 0; i--)
-            {
+            for (int i = powerups.size() - 1; i >= 0; i--) {
                 powerups.get(i).applyGravity();
                 powerups.get(i).draw(graphToBack);
                 powerups.get(i).move();
 
-                if(powerups.get(i).isColliding(player.xPos + player.width / 2, player.yPos + player.height / 2, powerups.get(i).getRadius(), 20) == true)
-                {
+                if (powerups.get(i).isColliding(player.xPos + player.width / 2, player.yPos + player.height / 2, powerups.get(i).getRadius(), 20) == true) {
                     System.out.println("collision");
                     player.setActivePowerup(powerups.get(i).powerType);
                     player.powerupTime = 0;
@@ -362,11 +353,12 @@ public class Board extends Canvas implements KeyListener, Runnable {
                     if (cball.isColliding(bullets.get(j).xPos, bullets.get(j).yPos, cball.getRadius(), 2)) {
                         bullets.remove(j);
 
-                        if(player.getActivePowerup().equals("pierce"))
+                        if (player.getActivePowerup().equals("pierce")) {
                             player.power = 10; // do extra damage if pierce is active
-                        else
+                        } else {
                             player.power = 5;
-                        
+                        }
+
                         cball.setSize(cball.size - player.power);
                         if (!USE_TICK_AS_SCORE) {
                             score += 5;
@@ -381,7 +373,7 @@ public class Board extends Canvas implements KeyListener, Runnable {
     }
 
     public void spawnPowerup() {
-        powerups.add(new Powerup((float)Math.random() * 600 + 10, 0.0f, (float)Math.random() + 0.2f, 0.0f));
+        powerups.add(new Powerup((float) Math.random() * 600 + 10, 0.0f, (float) Math.random() + 0.2f, 0.0f));
     }
 
     public void spawnBall() {

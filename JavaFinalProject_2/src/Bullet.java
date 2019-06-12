@@ -1,6 +1,7 @@
+
 import java.awt.*;
 
-public class Bullet extends Moving{
+public class Bullet extends Moving {
 
     public Bullet(float x, float y, float xs, float ys) {
         super(x, y, xs, ys);
@@ -15,6 +16,6 @@ public class Bullet extends Moving{
     @Override
     public void draw(Graphics window) {
         window.setColor(Color.WHITE);
-        window.fillOval((int)getxPos(), (int)getyPos(), 4, 4);
+        window.fillOval((int) getxPos(), (int) getyPos(), 4, 4);
     }
 }

@@ -13,6 +13,7 @@ import java.io.File;
 import java.util.List;
 import java.util.Scanner;
 import java.io.IOException;
+
 public class MainJFrame extends javax.swing.JFrame {
 
     /**
@@ -137,18 +138,15 @@ public class MainJFrame extends javax.swing.JFrame {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // TODO add your handling code here:
-        try
-        {
+        try {
             Scanner scanP = new Scanner(new File("scores.local"));
             printScoreLabel.setText(scanP.nextLine());
             Scanner scanH = new Scanner(new File("highScores.csv"));
             printHighscoreLabel.setText(scanH.nextLine().split(",")[1]);
-        }
-        catch(IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        
+
     }//GEN-LAST:event_formWindowOpened
 
     private void ScoreboardButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ScoreboardButtonActionPerformed
