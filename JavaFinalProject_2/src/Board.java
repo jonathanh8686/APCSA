@@ -297,7 +297,6 @@ public class Board extends Canvas implements KeyListener, Runnable {
             if (!player.getActivePowerup().equals("none")) {
                 graphToBack.drawString(player.getActivePowerup() + ":  " + Integer.toString(player.powerupTime), 50, 300);
                 if (player.powerupTime-- <= 0) {
-                    System.out.println("break");
                     player.setActivePowerup("none");
                 }
             }
@@ -354,17 +353,26 @@ public class Board extends Canvas implements KeyListener, Runnable {
                 //check if ball hit a bullet
                 for (int j = bullets.size() - 1; j >= 0; j--) {
                     if (cball.isColliding(bullets.get(j).xPos, bullets.get(j).yPos, cball.getRadius(), 2)) {
-                        bullets.remove(j);
 
                         if (player.getActivePowerup().equals("pierce")) {
-                            player.power = 10; // do extra damage if pierce is active
+                            if (bullets.get(j).alreadyHit(cball)) {
+                                player.power = 0;
+                            } else {
+                                player.power = 5;
+                                bullets.get(j).hitBall(cball);
+                            }
                         } else {
-                            player.power = 5;
+                            bullets.remove(j);
+                            if (player.getActivePowerup().equals("power")) {
+                                player.power = 10;
+                            } else {
+                                player.power = 5;
+                            }
                         }
 
                         cball.setSize(cball.size - player.power);
                         if (!USE_TICK_AS_SCORE) {
-                            score += 5;
+                            score += player.power;
                         }
                     }
                 }

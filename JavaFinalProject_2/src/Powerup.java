@@ -4,8 +4,8 @@ import java.awt.*;
 public class Powerup extends Physicsable {
 
     //freeze, firerate, pierce, permadeath
-    public static final String[] POWERUP_TYPES = {"freeze", "firert", "pierce", "permad"}; 
-    public static final int[] POWERUP_DURATIONS = {500, 2000, 2000, 2000};
+    public static final String[] POWERUP_TYPES = {"freeze", "firert", "pierce", "permad", "power"}; 
+    public static final int[] POWERUP_DURATIONS = {500, 1000, 2000, 2000, 1000};
     public int powerType = 0; 
 
 //    public Powerup(float x, float y, float xs, float ys, String pt) {
@@ -52,8 +52,10 @@ public class Powerup extends Physicsable {
             window.setColor(Color.white);
         } else if (getPowerType().equals("permad")) {
             window.setColor(Color.gray);
+        } else if (getPowerType().equals("power")) {
+            window.setColor(Color.yellow);
         } else {
-            window.setColor(Color.white);
+            window.setColor(Color.lightGray);
         }
 
         window.drawOval((int) xPos, (int) yPos, getRadius() * 2, getRadius() * 2);
