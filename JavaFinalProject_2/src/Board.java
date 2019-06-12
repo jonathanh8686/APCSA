@@ -234,7 +234,7 @@ public class Board extends Canvas implements KeyListener, Runnable {
                 balls.add(new Ball(cball.xPos, cball.yPos, cball.xSpeed, -Math.abs(cball.ySpeed), cball.getRadius() - 25, Color.RED));
                 balls.add(new Ball(cball.xPos, cball.yPos, -cball.xSpeed, -Math.abs(cball.ySpeed), cball.getRadius() - 25, Color.RED));
                 balls.remove(i);
-                spawnPowerup();
+                //spawnPowerup();
                 continue;
             }
 
@@ -256,8 +256,12 @@ public class Board extends Canvas implements KeyListener, Runnable {
                 // ball destroyed
                 deathAnimations.add(new DeathAnimation((int) cball.xPos, (int) cball.yPos, 2 * cball.size, cball.col));
                 balls.remove(i);
-
-                spawnBall();
+                if (!player.getActivePowerup().equals("permad") || balls.isEmpty()) {
+                    spawnBall();
+                }
+                if (Math.random() < 0.2) {
+                    spawnPowerup();
+                }
             }
 
             if (!player.getActivePowerup().equals("freeze")) { // don't move them if freeze is active
