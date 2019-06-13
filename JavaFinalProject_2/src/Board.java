@@ -107,6 +107,8 @@ public class Board extends Canvas implements KeyListener, Runnable {
 
             highScore = "0";
         }
+        
+        powerups.add(new Powerup(200, 200, 0, 0, 5));
     }
 
     /**
@@ -317,7 +319,6 @@ public class Board extends Canvas implements KeyListener, Runnable {
                 powerups.get(i).move();
 
                 if (powerups.get(i).isColliding(player.xPos + player.width / 2, player.yPos + player.height / 2, powerups.get(i).getRadius(), 20) == true) {
-                    System.out.println("collision");
                     player.setActivePowerup(powerups.get(i).getPowerType());
                     player.powerupTime = Powerup.POWERUP_DURATIONS[powerups.get(i).powerType];
                     powerups.remove(i);
@@ -375,6 +376,11 @@ public class Board extends Canvas implements KeyListener, Runnable {
                             score += player.power;
                         }
                     }
+                }
+                
+                //check if ball is poisoned
+                if (player.getActivePowerup().equals("poison")) {
+                    cball.setSize(cball.size - 1);
                 }
             }
 

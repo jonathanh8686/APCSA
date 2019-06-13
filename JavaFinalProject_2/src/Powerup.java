@@ -8,10 +8,10 @@ public class Powerup extends Physicsable {
     public static final int[] POWERUP_DURATIONS = {500, 1000, 2000, 2000, 1000};
     public int powerType = 0; 
 
-//    public Powerup(float x, float y, float xs, float ys, String pt) {
-//        super(x, y, xs, ys);
-//        powerType = pt;
-//    }
+    public Powerup(float x, float y, float xs, float ys, int pt) {
+        super(x, y, xs, ys);
+        powerType = pt;
+    }
 
     public Powerup(float x, float y, float xs, float ys) {
         super(x, y, xs, ys);
@@ -54,8 +54,10 @@ public class Powerup extends Physicsable {
             window.setColor(Color.gray);
         } else if (getPowerType().equals("power")) {
             window.setColor(Color.yellow);
+        } else if (getPowerType().equals("poison")) {
+            window.setColor(Color.green);
         } else {
-            window.setColor(Color.lightGray);
+            window.setColor(Color.white);
         }
 
         window.drawOval((int) xPos, (int) yPos, getRadius() * 2, getRadius() * 2);
