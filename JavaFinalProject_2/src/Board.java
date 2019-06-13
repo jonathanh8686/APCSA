@@ -107,8 +107,8 @@ public class Board extends Canvas implements KeyListener, Runnable {
 
             highScore = "0";
         }
-        
-        powerups.add(new Powerup(200, 200, 0, 0, 5));
+        //debug: start with one powerup
+        //powerups.add(new Powerup(200, 200, 0, 0, 5));
     }
 
     /**
@@ -377,10 +377,12 @@ public class Board extends Canvas implements KeyListener, Runnable {
                         }
                     }
                 }
-                
+
                 //check if ball is poisoned
                 if (player.getActivePowerup().equals("poison")) {
-                    cball.setSize(cball.size - 1);
+                    if (tick % 100 == 0) {
+                        cball.setSize(cball.size - 5);
+                    }
                 }
             }
 
@@ -394,7 +396,7 @@ public class Board extends Canvas implements KeyListener, Runnable {
     }
 
     public void spawnBall() {
-        balls.add(new Ball((float) Math.random() * 600 + 100, 100, (float) Math.random() + 0.2f, 0, 125, Color.GREEN));
+        balls.add(new Ball((float) Math.random() * 600 + 100, (float)Math.random() * 200, (float) Math.random() + 0.2f, 0, 125, Color.GREEN));
     }
 
     @Override

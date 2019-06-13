@@ -3,7 +3,7 @@ import java.awt.*;
 
 public class Powerup extends Physicsable {
 
-    //freeze, firerate, pierce, permadeath
+    //freeze, firerate, pierce, permadeath, power
     public static final String[] POWERUP_TYPES = {"freeze", "firert", "pierce", "permad", "power"}; 
     public static final int[] POWERUP_DURATIONS = {500, 1000, 2000, 2000, 1000};
     public int powerType = 0; 
