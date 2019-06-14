@@ -258,7 +258,7 @@ public class Board extends Canvas implements KeyListener, Runnable {
                 // ball destroyed
                 deathAnimations.add(new DeathAnimation((int) cball.xPos, (int) cball.yPos, 2 * cball.size, cball.col));
                 balls.remove(i);
-                if (!player.getActivePowerup().equals("permad") || balls.isEmpty()) {
+                if (!player.hasPowerup("permad") || balls.isEmpty()) {
                     spawnBall();
                 }
                 if (Math.random() < 0.2) {
@@ -266,7 +266,7 @@ public class Board extends Canvas implements KeyListener, Runnable {
                 }
             }
 
-            if (!player.getActivePowerup().equals("freeze")) { // don't move them if freeze is active
+            if (!player.hasPowerup("freeze")) { // don't move them if freeze is active
                 cball.applyGravity();
                 cball.move();
             }
@@ -295,15 +295,19 @@ public class Board extends Canvas implements KeyListener, Runnable {
         } else {
             //shoot
             tick++;
+            player.tickPowerups();
 
-            if (!player.getActivePowerup().equals("none")) {
-                graphToBack.drawString(player.getActivePowerup() + ":  " + Integer.toString(player.powerupTime), 50, 300);
-                if (player.powerupTime-- <= 0) {
-                    player.setActivePowerup("none");
-                }
+//            if (!player.getActivePowerup().equals("none")) {
+//                graphToBack.drawString(player.getActivePowerup() + ":  " + Integer.toString(player.powerupTime), 50, 300);
+//                if (player.powerupTime-- <= 0) {
+//                    player.setActivePowerup("none");
+//                }
+//            }
+            for (int i = 0; i < player.getActivePowerups().size(); i++) {
+                graphToBack.drawString(Powerup.POWERUP_TYPES[player.getActivePowerups().get(i)[0]] + ":  " + Integer.toString(player.getActivePowerups().get(i)[1]), 50, 275+25*i);
             }
 
-            if (!player.getActivePowerup().equals("firert")) {
+            if (!player.hasPowerup("firert")) {
                 if (tick % 15 == 0) {
                     bullets.add(new Bullet(player.getxPos() + player.width / 2, player.getyPos(), 0, -10));
                 }
@@ -319,8 +323,8 @@ public class Board extends Canvas implements KeyListener, Runnable {
                 powerups.get(i).move();
 
                 if (powerups.get(i).isColliding(player.xPos + player.width / 2, player.yPos + player.height / 2, powerups.get(i).getRadius(), 20) == true) {
-                    player.setActivePowerup(powerups.get(i).getPowerType());
-                    player.powerupTime = Powerup.POWERUP_DURATIONS[powerups.get(i).powerType];
+                    player.addActivePowerup(powerups.get(i).getPowerType());
+                    //player.powerupTime = Powerup.POWERUP_DURATIONS[powerups.get(i).powerType];
                     powerups.remove(i);
                 }
             }
@@ -355,7 +359,7 @@ public class Board extends Canvas implements KeyListener, Runnable {
                 for (int j = bullets.size() - 1; j >= 0; j--) {
                     if (cball.isColliding(bullets.get(j).xPos, bullets.get(j).yPos, cball.getRadius(), 2)) {
 
-                        if (player.getActivePowerup().equals("pierce")) {
+                        if (player.hasPowerup("pierce")) {
                             if (bullets.get(j).alreadyHit(cball)) {
                                 player.power = 0;
                             } else {
@@ -364,7 +368,7 @@ public class Board extends Canvas implements KeyListener, Runnable {
                             }
                         } else {
                             bullets.remove(j);
-                            if (player.getActivePowerup().equals("power")) {
+                            if (player.hasPowerup("power")) {
                                 player.power = 10;
                             } else {
                                 player.power = 5;
@@ -379,7 +383,7 @@ public class Board extends Canvas implements KeyListener, Runnable {
                 }
 
                 //check if ball is poisoned
-                if (player.getActivePowerup().equals("poison")) {
+                if (player.hasPowerup("poison")) {
                     if (tick % 100 == 0) {
                         cball.setSize(cball.size - 5);
                     }
